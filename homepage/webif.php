@@ -7,9 +7,10 @@ include("header.php")
 		<p>There are several available versions of the Primer3 web interface:  Primer3Web and Primer3Plus</p>
 
 	<h2 id="original">Primer3Web</h2>
-		<p>Primer3Web is the original web-interface to Primer3.  Primer3Web was developed by Steve Rozen and Helen Skaletsky.  Primer3Web is maintained by Steve Rozen.</p>  
+		<p>Primer3Web is the original web-interface to Primer3.  Primer3Web was developed by Steve Rozen and Helen Skaletsky.  
+                   Primer3Web is maintained by Triinu Koressaar and Maido Remm..</p>  
 		<p>
-			<a href="http://primer3.ut.ee/">Primer3Web 0.4.0</a>
+			<a href="http://primer3.ut.ee/">Primer3Web</a>
 		</p>
 
 	<h2 id="primer3plus">Primer3Plus</h2>

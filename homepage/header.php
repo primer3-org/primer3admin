@@ -10,7 +10,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Primer 3</title>
-    <link type="text/css" rel="stylesheet" href="css/primer3.css"/>
+    <link type="text/css" rel="stylesheet" href="primer3.css"/>
 </head>
 
 <body>
