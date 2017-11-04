@@ -1,0 +1,181 @@
+# 1. Clone all Subprojects
+  mkdir release
+  cd release
+  git clone https://github.com/primer3-org/primer3.git primer3
+  git clone https://github.com/primer3-org/primer3docs.git primer3docs
+  git clone https://github.com/primer3-org/primer3admin.git primer3admin
+  git clone https://github.com/primer3-org/primer3web.git primer3web
+  git clone https://github.com/primer3-org/primer3plus.git primer3plus
+
+
+# 2. Update the Documentation
+  cd primer3docs
+  vim create_tag_files_and_docs.pl
+  # Update $scriptP3Version, $scriptP3ManualTit, $scriptP3PlusHelpTit, $scriptP3WebHelpTit
+  git add create_tag_files_and_docs.pl
+  git commit -m 'Updated tags for release'
+  git tag -a v2.4.0 -m 'Release version 2.4.0'
+  git push origin master
+  git push origin --tags
+  ./create_tag_files_and_docs.pl
+  # Check the *.html files in the script_output folder
+  cd ..
+
+  # Get the link to the compressed folder from GitHub
+  wget https://github.com/primer3-org/primer3docs/archive/v2.4.0.tar.gz
+  tar -xvzf v2.4.0.tar.gz
+  cd "THE UNPACKED FOLDER"
+  ./create_tag_files_and_docs.pl
+  # Check the *.html files in the script_output folder
+  cd ..
+
+  # The following files have to be updated by the ones from script_output:
+  # Repo: primer3       src/primer3_manual.htm
+  # Repo: primer3plus   cgi-bin/primer3plusHelp.cgi
+  # Repo: primer3web    cgi-bin/primer3web_help.htm
+  # Repo: primer3admin  homepage/primer3_manual.htm
+  # Homepage: primer3_manual.htm
+
+
+# 3. Release Primer3
+  cd primer3
+
+  vim src/libprimer3.c
+  # Update year in copyright :466, libprimer3_release() :5627
+  vim test/p3test.pl
+  # Update release :97
+  vim src/release_notes.txt
+  # Update changes and release date
+  cd src
+  cp ../../primer3docs/script_output/primer3_manual.htm .
+  cd ..
+  # Update year in copyright:
+  vim test/primer_global_err/empty_1.out2
+  vim test/cmd_test3_output
+  vim test/cmd_test5_output
+  git add test/primer_global_err/empty_1.out2 test/cmd_test3_output test/cmd_test5_output
+  git add src/libprimer3.c test/p3test.pl src/release_notes.txt src/primer3_manual.htm
+  git commit -m 'Updated version for release'
+  git push origin master
+
+  # Run all tests on Linux
+  cd src
+  make
+  make test
+  sh paranoid_tests.sh
+  cd ../..
+
+  # Run all tests on Windows (in cmd)
+  dir src
+  mingw32-make test TESTOPTS=--windows
+
+  # If everything passes without errors, start clean again:
+  mv primer3 zzz_pimer3
+  git clone https://github.com/primer3-org/primer3.git primer3
+  cd primer3
+  git tag -a v2.4.0 -m 'Release version 2.4.0'
+  git push origin master
+  git push origin --tags
+  # And test again...
+  cd src
+  make
+  make test
+  sh paranoid_tests.sh
+  cd ../..
+
+  # Get the link to the compressed folder from GitHub
+  wget https://github.com/primer3-org/primer3/archive/v2.4.0.tar.gz
+  tar -xvzf v2.4.0.tar.gz
+  cd "THE UNPACKED FOLDER"/src
+  make
+  make test
+  cd ../..
+
+# 4. Release Primer3Plus
+  cd primer3plus
+
+  vim cgi-bin/settings.pm
+  # Update "P3P_VERSION" =>  :133
+
+  cd cgi-bin
+  cp ../../primer3docs/script_output/primer3plusHelp.cgi .
+  cd ..
+  git add cgi-bin/primer3plusHelp.cgi cgi-bin/settings.pm 
+  git commit -m 'Updated version for release'
+  git push origin master
+
+  git tag -a v2.5.0 -m 'Release version 2.5.0'
+  git push origin master
+  git push origin --tags
+  cd ..
+
+# 5. Release Primer3Web
+  cd primer3web
+
+  vim cgi-bin/primer3web_results.cgi
+  # Update $CGI_RELEASE =  :40
+
+  cd html
+  cp ../../primer3docs/script_output/primer3web_help.htm .
+  cd ..
+  git add cgi-bin/primer3web_results.cgi html/primer3web_help.htm
+  git commit -m 'Updated version for release'
+  git push origin master
+
+  git tag -a v4.1.0 -m 'Release version 4.1.0'
+  git push origin master
+  git push origin --tags
+  cd ..
+
+# 6. Release Primer3Admin and Homepage
+  cd primer3admin/homepage
+
+  cp ../../primer3docs/script_output/primer3_manual.htm .
+
+  vim releases.php
+  # Update release information
+  cd ..
+
+  git add cgi-bin/primer3web_results.cgi html/primer3web_help.htm
+  git commit -m 'Updated version for release'
+  git tag -a v2.4.0 -m 'Release version 2.4.0'
+  git push origin master
+  git push origin --tags
+  cd ..
+
+  # Upload files to homepage
+
+# 7. Sync the Git Repos to Sourceforge
+  # Sync the Repos
+  # Copy and release tar.gz files
+
+
+
+Old Stuff:
+# 6 UPLOAD TO SOURCEFORGE AND MAKE THE primer3-<release number>.tar.gz visible to the world
+
+# Use the Files tab on the web interface (at https://sourceforge.net/projects/primer3/develop) 
+# *after logging in* to create the folder for the new release, then upload the new files
+# either from the SourceForge web interface, or by the local command
+
+scp primer3-<release number>.tar.gz <user-name>,primer3@frs.sourceforge.net:/home/frs/project/p/pr/primer3/primer3/<release_number>/
+(same for latest release notes and primer3_manual.htm)
+
+# check if the file is available for download (may need to wait several minutes until the site gets updated):
+firefox https://sourceforge.net/projects/primer3/files/
+
+
+# 8 MAKE primer3-<release number>.tag.gz THE DEFAULT FOR ALL OSes.
+# In browser go to https://sourceforge.net/projects/primer3/files/primer3/<release number>
+# Click on the "Circle-I" button near the file primer-<release number>.tar.gz, and look on
+# lower right of page for "Default Download For:", then find "Select all" and click on it.
+# Then click on "Save" (lower left)
+
+# 9 UPDATE THE SOURCEFORGE WEB PAGE
+
+# upload them back:
+rsync -avz *.php <username>,primer3@web.sourceforge.net:htdocs/
+# Review messages to confirm that releases.php is uploaded
+
+rsync -avz *.htm <username>,primer3@web.sourceforge.net:htdocs/
+# Review messages to confirm that newest primer3_manual.htm is uploaded

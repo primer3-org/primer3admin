@@ -13,9 +13,9 @@ include("header.php");
 <h2 id="primer3theccode">Primer3 (the C code)</h2>
 
 <ul>
-<li><p> Release 2.3.7 (February 18, 2016) </p>
+<li><p> Release 2.4.0 (November 03, 2017) </p>
 <ul>
-<li><a href="https://sourceforge.net/projects/primer3/files/primer3/2.3.7/primer3-2.3.7.tar.gz/download">2.3.7 Downloads</a></li>
+<li><a href="https://github.com/primer3-org/primer3/archive/v2.4.0.tar.gz">2.4.0 Downloads</a></li>
 </ul>
 </li>
 </ul>
@@ -24,9 +24,9 @@ include("header.php");
 <h3 id="primer3-web">Primer3Web</h3>
 <ul>
 <li>
-<p>Release 4.0.0 (Jan 24, 2013)</p>
+<p>Release 4.1.0 (November 04, 2017)</p>
 <ul>
-<li><a href="https://sourceforge.net/projects/primer3/files/primer3-web/4.0.0/primer3web-4.0.0.tar.gz/download">4.0.0 Downloads</a></li>
+<li><a href="https://github.com/primer3-org/primer3web/archive/v4.1.0.tar.gz">4.1.0 Downloads</a></li>
 </ul>
 </li>
 </ul>
@@ -34,9 +34,9 @@ include("header.php");
 <h3 id="primer3-plus">Primer3Plus</h3>
 <ul>
 <li>
-<p>Release 2.3.6 (Oct 26, 2013)</p>
+<p>Release 2.5.0 (November 04, 2017)</p>
 <ul>
-<li><a href="https://sourceforge.net/projects/primer3/files/primer3plus/2.3.6/primer3plus-2.3.6.tar.gz/download">2.3.6 Downloads</a></li>
+<li><a href="https://github.com/primer3-org/primer3plus/archive/v2.5.0.tar.gz">2.5.0 Downloads</a></li>
 </ul>
 </li>
 </ul>
