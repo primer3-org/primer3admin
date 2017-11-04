@@ -136,7 +136,7 @@
   # Update release information
   cd ..
 
-  git add cgi-bin/primer3web_results.cgi html/primer3web_help.htm
+  git add homepage/primer3_manual.htm homepage/releases.php
   git commit -m 'Updated version for release'
   git tag -a v2.4.0 -m 'Release version 2.4.0'
   git push origin master
@@ -147,35 +147,14 @@
 
 # 7. Sync the Git Repos to Sourceforge
   # Sync the Repos
+
   # Copy and release tar.gz files
+    # Use the Files tab on the web interface (at https://sourceforge.net/projects/primer3/develop)
+    # *after logging in* to create the folder for the new release, then upload the new files
 
+    # Make primer3-<release number>.tag.gz THE DEFAULT FOR ALL OSes.
+    # In browser go to https://sourceforge.net/projects/primer3/files/primer3/<release number>
+    # Click on the "Circle-I" button near the file primer-<release number>.tar.gz, and look on
+    # lower right of page for "Default Download For:", then find "Select all" and click on it.
+    # Then click on "Save" (lower left)
 
-
-Old Stuff:
-# 6 UPLOAD TO SOURCEFORGE AND MAKE THE primer3-<release number>.tar.gz visible to the world
-
-# Use the Files tab on the web interface (at https://sourceforge.net/projects/primer3/develop) 
-# *after logging in* to create the folder for the new release, then upload the new files
-# either from the SourceForge web interface, or by the local command
-
-scp primer3-<release number>.tar.gz <user-name>,primer3@frs.sourceforge.net:/home/frs/project/p/pr/primer3/primer3/<release_number>/
-(same for latest release notes and primer3_manual.htm)
-
-# check if the file is available for download (may need to wait several minutes until the site gets updated):
-firefox https://sourceforge.net/projects/primer3/files/
-
-
-# 8 MAKE primer3-<release number>.tag.gz THE DEFAULT FOR ALL OSes.
-# In browser go to https://sourceforge.net/projects/primer3/files/primer3/<release number>
-# Click on the "Circle-I" button near the file primer-<release number>.tar.gz, and look on
-# lower right of page for "Default Download For:", then find "Select all" and click on it.
-# Then click on "Save" (lower left)
-
-# 9 UPDATE THE SOURCEFORGE WEB PAGE
-
-# upload them back:
-rsync -avz *.php <username>,primer3@web.sourceforge.net:htdocs/
-# Review messages to confirm that releases.php is uploaded
-
-rsync -avz *.htm <username>,primer3@web.sourceforge.net:htdocs/
-# Review messages to confirm that newest primer3_manual.htm is uploaded
