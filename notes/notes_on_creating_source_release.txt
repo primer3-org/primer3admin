@@ -6,12 +6,12 @@
   git clone https://github.com/primer3-org/primer3admin.git primer3admin
   git clone https://github.com/primer3-org/primer3web.git primer3web
   git clone https://github.com/primer3-org/primer3plus.git primer3plus
-
+  git clone https://github.com/primer3-org/primer3-org.github.io.git homepage
 
 # 2. Update the Documentation
   cd primer3docs
   vim create_tag_files_and_docs.pl
-  # Update $scriptP3Version, $scriptP3ManualTit, $scriptP3PlusHelpTit, $scriptP3WebHelpTit
+  # Update $scriptP3Version, $scriptP3ManualTit, $scriptP3PlusHelpTit, $scriptP3WebHelpTit, $scriptP3Years
   git add create_tag_files_and_docs.pl
   git commit -m 'Updated tags for release'
   git tag -a v2.4.0 -m 'Release version 2.4.0'
@@ -33,15 +33,14 @@
   # Repo: primer3       src/primer3_manual.htm
   # Repo: primer3plus   cgi-bin/primer3plusHelp.cgi
   # Repo: primer3web    cgi-bin/primer3web_help.htm
-  # Repo: primer3admin  homepage/primer3_manual.htm
   # Homepage: primer3_manual.htm
 
 
 # 3. Release Primer3
   cd primer3
 
-  vim src/libprimer3.c
-  # Update year in copyright :466, libprimer3_release() :5627
+  vim src/libprimer3.cc
+  # Update year in *primer3_copyright_char_star :487, libprimer3_release() :5975
   vim test/p3test.pl
   # Update release :97
   vim src/release_notes.txt
@@ -54,7 +53,7 @@
   vim test/cmd_test3_output
   vim test/cmd_test5_output
   git add test/primer_global_err/empty_1.out2 test/cmd_test3_output test/cmd_test5_output
-  git add src/libprimer3.c test/p3test.pl src/release_notes.txt src/primer3_manual.htm
+  git add src/libprimer3.cc test/p3test.pl src/release_notes.txt src/primer3_manual.htm
   git commit -m 'Updated version for release'
   git push origin master
 
@@ -68,20 +67,18 @@
   # Run all tests on Windows (in cmd)
   dir src
   mingw32-make test TESTOPTS=--windows
+  dir test
+  perl p3test.pl --windows
 
-  # If everything passes without errors, start clean again:
-  mv primer3 zzz_pimer3
-  git clone https://github.com/primer3-org/primer3.git primer3
-  cd primer3
-  git tag -a v2.4.0 -m 'Release version 2.4.0'
-  git push origin master
-  git push origin --tags
-  # And test again...
-  cd src
-  make
-  make test
-  sh paranoid_tests.sh
-  cd ../..
+  # checkout new on windows in folder primer3_v2_5_0
+  mingw32-make TESTOPTS=--windows
+  # Delete the .git and the kmere_list folders
+  # Zip the primer3 folder including the exe files for GitHub as binary
+
+  # If everything passes without errors:
+  # Prepare a release by logging into GitHub and prepare the release using
+  # the web interface as it is easier to ad notes and binary files like
+  # the windows binary to the release. The tag is automatically created.
 
   # Get the link to the compressed folder from GitHub
   wget https://github.com/primer3-org/primer3/archive/v2.4.0.tar.gz
