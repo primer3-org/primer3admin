@@ -1,0 +1,115 @@
+----------------------------------------------------------------------------------
+// Start with
+choose_primers()
+  // Set ouput type based on pick primer and task
+  retval->output_type = primer_pairs || primer_list
+  // Check in input makes sense and adapt some parameters to the task
+  _adjust_seq_args()
+  // Check in input makes sense
+  _pr_data_control()
+
+  if (pa->primer_task == pick_primer_list) {
+    make_complete_primer_lists();
+  } else if (pa->primer_task == pick_sequencing_primers) {
+    pick_sequencing_primer_list();
+  } else if (pa->primer_task == check_primers) {
+    add_primers_to_check();
+  } else { /* The general way to pick primers */
+    /* Populate the forward and reverse primer lists */
+    if (make_detection_primer_lists() != 0) {
+      /* There was an error */
+      return retval;
+    }
+    /* Populate the internal oligo lists */
+    if ( pa->pick_internal_oligo) {
+      if (make_internal_oligo_list() != 0) {
+        /* There was an error*/
+        return retval;
+      }
+    }
+  }
+
+  // Sort the primer lists
+  if (pa->pick_right_primer && (pa->primer_task != pick_sequencing_primers))
+    sort_primer_array(&retval->rev);
+  if (pa->pick_left_primer && (pa->primer_task != pick_sequencing_primers))
+    sort_primer_array(&retval->fwd);
+  if (retval->output_type == primer_list && pa->pick_internal_oligo == 1)
+    sort_primer_array(&retval->intl);
+
+  // make pairs out of them
+  if (retval->output_type == primer_pairs) {
+    choose_pair_or_triple();
+  }
+  
+  // create pretty sec structures
+  recalc_secundary_structures()
+----------------------------------------------------------------------------------
+make_complete_primer_lists()
+  // set the range to the entire sequence - primer length and use
+  pick_primer_range()
+----------------------------------------------------------------------------------
+pick_sequencing_primer_list()
+  // iterate over targets, calculate the required primer number and 
+  // pick at each position using
+  pick_only_best_primer()
+----------------------------------------------------------------------------------
+add_primers_to_check()
+  // add the provided primers to the list using
+  add_one_primer()
+----------------------------------------------------------------------------------
+make_detection_primer_lists()
+  // Calculate the start and end of the range
+  // Pick left and right primer:
+    if (sa->left_input) {
+      add_one_primer();
+    }
+    /* Pick primers at one position */
+    else if(sa->force_left_start > -1 || sa->force_left_end > -1) {
+      pick_primers_by_position();
+    }
+    /* Or pick all good in the given range */
+    else {
+      pick_primer_range();
+    }
+----------------------------------------------------------------------------------
+make_internal_oligo_list()
+  // either use the input or pick range
+  add_one_primer()
+  // or pick range
+  pick_primer_range()
+----------------------------------------------------------------------------------
+pick_only_best_primer()
+  // create all primer in the range and check them using
+  calc_and_check_oligo_features()
+  // keep only the best oligo and add it using
+  add_oligo_to_oligo_array()
+----------------------------------------------------------------------------------
+pick_primer_range()
+  // create all primer in the range and check them using
+  calc_and_check_oligo_features()
+  // keep all good oligos and add them using
+  add_oligo_to_oligo_array()  
+----------------------------------------------------------------------------------
+pick_primers_by_position()
+  // find the right position and use
+  add_one_primer_by_position()
+----------------------------------------------------------------------------------
+add_one_primer_by_position()
+  // find the position and parameters an run
+  calc_and_check_oligo_features()
+  add_oligo_to_oligo_array()
+----------------------------------------------------------------------------------
+add_one_primer()
+  // find the position and parameters an run
+  calc_and_check_oligo_features()
+  add_oligo_to_oligo_array()
+----------------------------------------------------------------------------------
+add_oligo_to_oligo_array()
+  // does what it says
+----------------------------------------------------------------------------------
+choose_pair_or_triple()
+  // complex function keeping track of what pairs were already evaluated
+  // and only evaluates possible good ones by
+  characterize_pair()
+----------------------------------------------------------------------------------
