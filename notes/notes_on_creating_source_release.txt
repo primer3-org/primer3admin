@@ -1,39 +1,31 @@
 # 1. Clone all Subprojects
-  mkdir release
-  cd release
-  git clone https://github.com/primer3-org/primer3.git primer3
+  mkdir code
+  cd code
+  git clone https://github.com/primer3-org/primer3.git primer3core
   git clone https://github.com/primer3-org/primer3docs.git primer3docs
   git clone https://github.com/primer3-org/primer3admin.git primer3admin
   git clone https://github.com/primer3-org/primer3web.git primer3web
   git clone https://github.com/primer3-org/primer3plus.git primer3plus
-  git clone https://github.com/primer3-org/primer3-org.github.io.git homepage
+  git clone https://github.com/primer3-org/primer3-org.github.io.git primer3homepage
 
 # 2. Update the Documentation
   cd primer3docs
   vim create_tag_files_and_docs.pl
   # Update $scriptP3Version, $scriptP3ManualTit, $scriptP3PlusHelpTit, $scriptP3WebHelpTit, $scriptP3Years
-  git add create_tag_files_and_docs.pl
-  git commit -m 'Updated tags for release'
-  git tag -a v2.4.0 -m 'Release version 2.4.0'
-  git push origin master
+  # Update copyright by searching for "Copyright (c) 1996" in primer3_textblocks.xml
+  git add create_tag_files_and_docs.pl primer3_textblocks.xml
+  git commit -m 'Updated tags for release v2.6.0'
+  git tag -a v2.6.0 -m 'Release version 2.6.0'
+  git push origin main
   git push origin --tags
   ./create_tag_files_and_docs.pl
-  # Check the *.html files in the script_output folder
-  cd ..
-
-  # Get the link to the compressed folder from GitHub
-  wget https://github.com/primer3-org/primer3docs/archive/v2.4.0.tar.gz
-  tar -xvzf v2.4.0.tar.gz
-  cd "THE UNPACKED FOLDER"
-  ./create_tag_files_and_docs.pl
-  # Check the *.html files in the script_output folder
-  cd ..
 
   # The following files have to be updated by the ones from script_output:
   # Repo: primer3       src/primer3_manual.htm
-  # Repo: primer3plus   cgi-bin/primer3plusHelp.cgi
+  # Repo: primer3plus   client/src/primer3plusHelp.html
+  # Repo: primer3plus   server/settings_files/default_settings.json
   # Repo: primer3web    cgi-bin/primer3web_help.htm
-  # Homepage: primer3_manual.htm
+  # Homepage: manual.htm
 
 
 # 3. Release Primer3
@@ -42,7 +34,7 @@
   vim src/libprimer3.cc
   # Update year in *primer3_copyright_char_star :487, libprimer3_release() :5975
   vim test/p3test.pl
-  # Update release :97
+  # Update release :98
   vim src/release_notes.txt
   # Update changes and release date
   cd src
@@ -52,28 +44,22 @@
   vim test/primer_global_err/empty_1.out2
   vim test/cmd_test3_output
   vim test/cmd_test5_output
-  git add test/primer_global_err/empty_1.out2 test/cmd_test3_output test/cmd_test5_output
-  git add src/libprimer3.cc test/p3test.pl src/release_notes.txt src/primer3_manual.htm
-  git commit -m 'Updated version for release'
-  git push origin master
 
   # Run all tests on Linux
   cd src
   make
   make test
   sh paranoid_tests.sh
-  cd ../..
 
-  # Run all tests on Windows (in cmd)
-  dir src
-  mingw32-make test TESTOPTS=--windows
-  dir test
-  perl p3test.pl --windows
+  git add test/primer_global_err/empty_1.out2 test/cmd_test3_output test/cmd_test5_output
+  git add src/libprimer3.cc test/p3test.pl src/release_notes.txt src/primer3_manual.htm
+  git commit -m 'Updated version for release v2.6.0'
+  git push origin main
 
-  # checkout new on windows in folder primer3_v2_5_0
-  mingw32-make TESTOPTS=--windows
-  # Delete the .git and the kmere_list folders
-  # Zip the primer3 folder including the exe files for GitHub as binary
+  # Check all test actions on GitHub
+  # Download the windows src file.
+  # Checkout on windows, replace src and zip. Rename primer3-2.6.0_exe_for_windows.zip
+  # Download source, rename primer3-2.6.0_source_code.zip
 
   # If everything passes without errors:
   # Prepare a release by logging into GitHub and prepare the release using
@@ -81,8 +67,8 @@
   # the windows binary to the release. The tag is automatically created.
 
   # Get the link to the compressed folder from GitHub
-  wget https://github.com/primer3-org/primer3/archive/v2.4.0.tar.gz
-  tar -xvzf v2.4.0.tar.gz
+  wget https://github.com/primer3-org/primer3/archive/v2.6.0.tar.gz
+  tar -xvzf v2.6.0.tar.gz
   cd "THE UNPACKED FOLDER"/src
   make
   make test
@@ -91,18 +77,14 @@
 # 4. Release Primer3Plus
   cd primer3plus
 
-  vim cgi-bin/settings.pm
-  # Update "P3P_VERSION" =>  :133
+  vim client/src/static/js/primer3plus.js
+  # Update var primer3plus_version = "3.2.0";  :23
 
-  cd cgi-bin
-  cp ../../primer3docs/script_output/primer3plusHelp.cgi .
-  cd ..
-  git add cgi-bin/primer3plusHelp.cgi cgi-bin/settings.pm 
-  git commit -m 'Updated version for release'
-  git push origin master
-
-  git tag -a v2.5.0 -m 'Release version 2.5.0'
-  git push origin master
+  # Updated help from docs?
+  git add ...
+  git commit -m 'Updated version for release 3.2.0'
+  git push origin main
+  git tag -a v3.2.0 -m 'Release version 3.2.0'
   git push origin --tags
   cd ..
 
@@ -117,32 +99,40 @@
   cd ..
   git add cgi-bin/primer3web_results.cgi html/primer3web_help.htm
   git commit -m 'Updated version for release'
-  git push origin master
+  git push origin main
 
   git tag -a v4.1.0 -m 'Release version 4.1.0'
-  git push origin master
+  git push origin main
   git push origin --tags
   cd ..
 
-# 6. Release Primer3Admin and Homepage
+# 6. Release Homepage
   cd primer3admin/homepage
 
-  cp ../../primer3docs/script_output/primer3_manual.htm .
+  cp ../../primer3docs/script_output/primer3_manual.html .
 
-  vim releases.php
+  vim releases.html
   # Update release information
   cd ..
 
-  git add homepage/primer3_manual.htm homepage/releases.php
-  git commit -m 'Updated version for release'
-  git tag -a v2.4.0 -m 'Release version 2.4.0'
-  git push origin master
+  git add primer3_manual.html releases.html
+  git commit -m 'Updated version for release 2.6.0'
+  git tag -a v2.6.0 -m 'Release version 2.6.0'
+  git push origin main
   git push origin --tags
   cd ..
 
-  # Upload files to homepage
+# 7. Release Primer3Admin
+  cd primer3admin
 
-# 7. Sync the Git Repos to Sourceforge
+  git add notes/notes_on_creating_source_release.txt
+  git commit -m 'Updated version for release 2.6.0'
+  git tag -a v2.6.0 -m 'Release version 2.6.0'
+  git push origin main
+  git push origin --tags
+  cd ..
+
+# 8. Sync the Git Repos to Sourceforge
   # Sync the Repos
 
   # Copy and release tar.gz files
