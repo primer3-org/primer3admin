@@ -134,6 +134,13 @@
 
 # 8. Sync the Git Repos to Sourceforge
   # Sync the Repos
+  mkdir sf_fix
+  cd sf_fix/
+  cp ../code/primer3/primer3admin/scripts/sync_sf/* .
+  ./clone.sh 
+  ./sync_primer3core.sh 
+  ./sync_primer3docs.sh 
+  ./sync_primer3plus.sh 
 
   # Copy and release tar.gz files
     # Use the Files tab on the web interface (at https://sourceforge.net/projects/primer3/develop)
